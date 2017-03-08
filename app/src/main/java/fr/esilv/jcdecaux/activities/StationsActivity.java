@@ -13,14 +13,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import fr.esilv.jcdecaux.Constants;
 import fr.esilv.jcdecaux.R;
 import fr.esilv.jcdecaux.adapters.StationsAdapter;
+import fr.esilv.jcdecaux.interfaces.OnStationSelectedListener;
+import fr.esilv.jcdecaux.models.Station;
 import fr.esilv.jcdecaux.models.Stations;
 
-public class StationsActivity extends AppCompatActivity {
+public class StationsActivity extends AppCompatActivity implements OnStationSelectedListener{
 
 	private static final String CONTRACT = "CONTRACT";
 	private static final String STATIONS_URL = "https://api.jcdecaux.com/vls/v1/stations?contract=";
@@ -68,6 +71,13 @@ public class StationsActivity extends AppCompatActivity {
 
 	private void setAdapter(Stations stations) {
 		StationsAdapter adapter = new StationsAdapter(stations);
+		adapter.setOnStationSelectedListener(this);
 		recyclerView.setAdapter(adapter);
+	}
+
+	@Override
+	public void onStationSelected(Station station) {
+		LatLng position = new LatLng(station.getPosition().getLat(),station.getPosition().getLng());
+		MapsActivity.start(this, position);
 	}
 }
