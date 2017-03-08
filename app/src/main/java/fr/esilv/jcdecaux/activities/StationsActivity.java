@@ -2,6 +2,7 @@ package fr.esilv.jcdecaux.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,13 @@ public class StationsActivity extends AppCompatActivity implements OnStationSele
 		setContentView(R.layout.activity_stations);
 
 		contractName = getIntent().getStringExtra(CONTRACT);
+
+		SharedPreferences sharedPref = getSharedPreferences("JCDECAUX",Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putString(getString(R.string.saved_contract), contractName);
+		editor.commit();
+
+		System.out.println(sharedPref.getString(getString(R.string.saved_contract),"bouh"));
 
 		recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));

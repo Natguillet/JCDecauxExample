@@ -1,6 +1,9 @@
 package fr.esilv.jcdecaux.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,12 +30,15 @@ public class ContractsActivity extends AppCompatActivity implements OnContractSe
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SharedPreferences sharedPref = getSharedPreferences("JCDECAUX",Context.MODE_PRIVATE);
+		String saveData = sharedPref.getString(getString(R.string.saved_contract),"bouh");
 		setContentView(R.layout.activity_contracts);
 
 		recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 		getContracts();
+		if(saveData != "bouh") StationsActivity.start(this,saveData);
 	}
 
 	private void getContracts() {
